@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Keyboard Piano</title>
+  <link rel="stylesheet" href="style.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+</head>
+<body>
+
+  <!-- Background canvas for ambient visuals -->
+  <canvas id="bg-canvas"></canvas>
+
+  <div class="app">
+
+    <!-- Header -->
+    <header class="header">
+      <div class="logo">
+        <span class="logo-icon">♩</span>
+        <span class="logo-text">KeyPiano</span>
+      </div>
+      <div class="header-right">
+        <span class="version-tag">v1.0</span>
+      </div>
+    </header>
+
+    <!-- Main content -->
+    <main class="main">
+
+      <!-- Visualizer -->
+      <section class="visualizer-section">
+        <canvas id="visualizer" class="visualizer"></canvas>
+        <div class="visualizer-label" id="viz-label">Play a key to begin</div>
+      </section>
+
+      <!-- Controls Panel -->
+      <section class="controls-panel">
+
+        <!-- Instrument Selector -->
+        <div class="control-group instrument-group">
+          <label class="control-label">Instrument</label>
+          <div class="instrument-grid">
+            <button class="instrument-btn active" data-instrument="piano">
+              <span class="inst-icon">🎹</span>
+              <span class="inst-name">Piano</span>
+            </button>
+            <button class="instrument-btn" data-instrument="organ">
+              <span class="inst-icon">🎺</span>
+              <span class="inst-name">Organ</span>
+            </button>
+            <button class="instrument-btn" data-instrument="synth">
+              <span class="inst-icon">🌊</span>
+              <span class="inst-name">Synth</span>
+            </button>
+            <button class="instrument-btn" data-instrument="guitar">
+              <span class="inst-icon">🎸</span>
+              <span class="inst-name">Guitar</span>
+            </button>
+            <button class="instrument-btn" data-instrument="bells">
+              <span class="inst-icon">🔔</span>
+              <span class="inst-name">Bells</span>
+            </button>
+            <button class="instrument-btn" data-instrument="bass">
+              <span class="inst-icon">🎵</span>
+              <span class="inst-name">Bass</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Octave + Volume -->
+        <div class="control-group sliders-group">
+          <div class="slider-row">
+            <label class="control-label">Octave</label>
+            <div class="octave-control">
+              <button class="oct-btn" id="oct-down">−</button>
+              <span class="oct-display" id="oct-display">4</span>
+              <button class="oct-btn" id="oct-up">+</button>
+            </div>
+          </div>
+          <div class="slider-row">
+            <label class="control-label">Volume</label>
+            <input type="range" class="slider" id="volume-slider" min="0" max="100" value="80" />
+            <span class="slider-val" id="vol-val">80%</span>
+          </div>
+          <div class="slider-row">
+            <label class="control-label">Reverb</label>
+            <input type="range" class="slider" id="reverb-slider" min="0" max="100" value="20" />
+            <span class="slider-val" id="rev-val">20%</span>
+          </div>
+        </div>
+
+        <!-- Record & Playback -->
+        <div class="control-group record-group">
+          <label class="control-label">Studio</label>
+          <div class="studio-controls">
+            <button class="studio-btn record-btn" id="record-btn">
+              <span class="btn-dot"></span>
+              Record
+            </button>
+            <button class="studio-btn play-btn" id="play-btn" disabled>
+              <span>▶</span>
+              Play
+            </button>
+            <button class="studio-btn stop-btn" id="stop-btn" disabled>
+              <span>■</span>
+              Stop
+            </button>
+            <button class="studio-btn clear-btn" id="clear-btn" disabled>
+              <span>✕</span>
+              Clear
+            </button>
+          </div>
+          <div class="recording-status" id="recording-status">
+            <span class="status-dot" id="status-dot"></span>
+            <span id="status-text">Ready</span>
+            <span class="rec-timer" id="rec-timer"></span>
+          </div>
+        </div>
+
+      </section>
+
+      <!-- Keyboard Legend -->
+      <div class="key-legend">
+        <span>Use keyboard keys to play · <kbd>Z</kbd>–<kbd>/</kbd> white keys · <kbd>S</kbd> <kbd>D</kbd> <kbd>G</kbd> <kbd>H</kbd> <kbd>J</kbd> black keys</span>
+      </div>
+
+      <!-- Piano Keyboard -->
+      <section class="piano-section">
+        <div class="piano" id="piano">
+          <!-- Generated by JS -->
+        </div>
+      </section>
+
+    </main>
+
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
