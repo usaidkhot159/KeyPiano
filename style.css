@@ -1,0 +1,683 @@
+/* =============================================
+   KEYBOARD PIANO — Style Sheet
+   ============================================= */
+
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+:root {
+  --bg:           #0D0D0F;
+  --surface:      #141418;
+  --surface2:     #1C1C24;
+  --border:       #2A2A36;
+  --border-light: #3A3A4A;
+
+  --text-primary:   #F0EDF8;
+  --text-secondary: #8A87A0;
+  --text-muted:     #4A4860;
+
+  --accent:       #A78BFA;
+  --accent-dim:   rgba(167, 139, 250, 0.15);
+  --accent-glow:  rgba(167, 139, 250, 0.4);
+
+  --rec-red:      #EF4444;
+  --rec-red-dim:  rgba(239, 68, 68, 0.2);
+
+  --white-key:    #F5F0E8;
+  --white-hover:  #FFFFFF;
+  --white-active: #DDD8F0;
+  --black-key:    #1A1820;
+  --black-hover:  #2A2838;
+  --black-active: #3A3060;
+
+  --key-shadow:   0 8px 24px rgba(0,0,0,0.6);
+  --key-pressed:  0 2px 8px rgba(0,0,0,0.8);
+
+  --radius-sm:  6px;
+  --radius-md:  10px;
+  --radius-lg:  16px;
+
+  --font: 'Space Grotesk', system-ui, sans-serif;
+}
+
+html, body {
+  height: 100%;
+  overflow: hidden;
+}
+
+body {
+  background: var(--bg);
+  color: var(--text-primary);
+  font-family: var(--font);
+  font-size: 14px;
+  line-height: 1.5;
+  user-select: none;
+}
+
+/* ── Background canvas ── */
+#bg-canvas {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  opacity: 0.4;
+}
+
+/* ── App shell ── */
+.app {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  max-height: 100vh;
+  overflow: hidden;
+}
+
+/* ── Header ── */
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 28px;
+  border-bottom: 1px solid var(--border);
+  background: rgba(13, 13, 15, 0.8);
+  backdrop-filter: blur(12px);
+  flex-shrink: 0;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.logo-icon {
+  font-size: 22px;
+  color: var(--accent);
+  line-height: 1;
+}
+
+.logo-text {
+  font-size: 17px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  background: linear-gradient(135deg, var(--text-primary) 0%, var(--accent) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.version-tag {
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--text-muted);
+  border: 1px solid var(--border);
+  padding: 2px 8px;
+  border-radius: 20px;
+  letter-spacing: 0.05em;
+}
+
+/* ── Main ── */
+.main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  padding: 16px 28px 0;
+  gap: 16px;
+}
+
+/* ── Visualizer ── */
+.visualizer-section {
+  position: relative;
+  flex-shrink: 0;
+  height: 80px;
+  border-radius: var(--radius-md);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  overflow: hidden;
+}
+
+.visualizer {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+.visualizer-label {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  color: var(--text-muted);
+  letter-spacing: 0.08em;
+  pointer-events: none;
+  transition: opacity 0.4s;
+}
+
+.visualizer-label.hidden {
+  opacity: 0;
+}
+
+/* ── Controls Panel ── */
+.controls-panel {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 16px;
+  flex-shrink: 0;
+}
+
+.control-group {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 14px 16px;
+}
+
+.control-label {
+  display: block;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  margin-bottom: 12px;
+}
+
+/* Instrument grid */
+.instrument-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 6px;
+}
+
+.instrument-btn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3px;
+  padding: 8px 4px;
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  color: var(--text-secondary);
+  transition: all 0.15s ease;
+  font-family: var(--font);
+}
+
+.instrument-btn:hover {
+  border-color: var(--border-light);
+  color: var(--text-primary);
+  background: #222230;
+}
+
+.instrument-btn.active {
+  background: var(--accent-dim);
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+.inst-icon {
+  font-size: 16px;
+  line-height: 1;
+}
+
+.inst-name {
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.03em;
+}
+
+/* Sliders */
+.sliders-group {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.slider-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.slider-row .control-label {
+  margin: 0;
+  width: 52px;
+  flex-shrink: 0;
+}
+
+.octave-control {
+  display: flex;
+  align-items: center;
+  gap: 0;
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+  flex: 1;
+}
+
+.oct-btn {
+  background: none;
+  border: none;
+  color: var(--text-secondary);
+  font-size: 18px;
+  font-weight: 300;
+  padding: 4px 14px;
+  cursor: pointer;
+  transition: all 0.1s;
+  font-family: var(--font);
+  line-height: 1;
+}
+
+.oct-btn:hover {
+  background: var(--accent-dim);
+  color: var(--accent);
+}
+
+.oct-display {
+  flex: 1;
+  text-align: center;
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.slider {
+  -webkit-appearance: none;
+  appearance: none;
+  flex: 1;
+  height: 4px;
+  background: var(--surface2);
+  border-radius: 2px;
+  outline: none;
+  border: 1px solid var(--border);
+}
+
+.slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: var(--accent);
+  cursor: pointer;
+  box-shadow: 0 0 8px var(--accent-glow);
+  transition: transform 0.1s;
+}
+
+.slider::-webkit-slider-thumb:hover {
+  transform: scale(1.2);
+}
+
+.slider::-moz-range-thumb {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: var(--accent);
+  cursor: pointer;
+  border: none;
+  box-shadow: 0 0 8px var(--accent-glow);
+}
+
+.slider-val {
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--text-secondary);
+  width: 32px;
+  text-align: right;
+  flex-shrink: 0;
+}
+
+/* Studio */
+.studio-controls {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 6px;
+  margin-bottom: 10px;
+}
+
+.studio-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 8px 12px;
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  color: var(--text-secondary);
+  font-family: var(--font);
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  transition: all 0.15s;
+}
+
+.studio-btn:hover:not(:disabled) {
+  color: var(--text-primary);
+  border-color: var(--border-light);
+}
+
+.studio-btn:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+}
+
+.record-btn .btn-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--rec-red);
+  flex-shrink: 0;
+}
+
+.record-btn.recording {
+  background: var(--rec-red-dim);
+  border-color: var(--rec-red);
+  color: var(--rec-red);
+  animation: rec-pulse 1s ease-in-out infinite;
+}
+
+.record-btn.recording .btn-dot {
+  animation: dot-blink 1s ease-in-out infinite;
+}
+
+@keyframes rec-pulse {
+  0%, 100% { box-shadow: 0 0 0 0 var(--rec-red-dim); }
+  50% { box-shadow: 0 0 0 6px transparent; }
+}
+
+@keyframes dot-blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.2; }
+}
+
+.play-btn:not(:disabled):hover {
+  background: rgba(167, 139, 250, 0.1);
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+.stop-btn:not(:disabled):hover {
+  background: rgba(239, 68, 68, 0.1);
+  border-color: var(--rec-red);
+  color: var(--rec-red);
+}
+
+.clear-btn:not(:disabled):hover {
+  background: rgba(239, 68, 68, 0.08);
+  border-color: #666;
+  color: #ccc;
+}
+
+.recording-status {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 11px;
+  color: var(--text-muted);
+}
+
+.status-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--text-muted);
+  flex-shrink: 0;
+}
+
+.status-dot.recording {
+  background: var(--rec-red);
+}
+
+.status-dot.playing {
+  background: var(--accent);
+}
+
+.rec-timer {
+  margin-left: auto;
+  font-size: 11px;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  color: var(--text-secondary);
+}
+
+/* ── Key Legend ── */
+.key-legend {
+  text-align: center;
+  font-size: 11px;
+  color: var(--text-muted);
+  flex-shrink: 0;
+  padding: 4px 0;
+}
+
+.key-legend kbd {
+  display: inline-block;
+  background: var(--surface2);
+  border: 1px solid var(--border-light);
+  border-radius: 4px;
+  padding: 1px 5px;
+  font-family: var(--font);
+  font-size: 10px;
+  color: var(--text-secondary);
+}
+
+/* ── Piano Section ── */
+.piano-section {
+  flex: 1;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  overflow-x: auto;
+  overflow-y: hidden;
+  padding-bottom: 20px;
+  scrollbar-width: none;
+}
+
+.piano-section::-webkit-scrollbar {
+  display: none;
+}
+
+.piano {
+  position: relative;
+  display: flex;
+  align-items: flex-start;
+  height: 200px;
+  flex-shrink: 0;
+}
+
+/* ── Piano Keys ── */
+.key {
+  position: relative;
+  cursor: pointer;
+  transition: background 0.05s, transform 0.05s, box-shadow 0.05s;
+  outline: none;
+}
+
+.key.white {
+  width: 52px;
+  height: 200px;
+  background: var(--white-key);
+  border: 1px solid #B0A8C0;
+  border-top: none;
+  border-radius: 0 0 8px 8px;
+  box-shadow: var(--key-shadow);
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
+  padding-bottom: 10px;
+}
+
+.key.white:hover {
+  background: var(--white-hover);
+}
+
+.key.white.active {
+  background: var(--white-active);
+  transform: scaleY(0.98);
+  transform-origin: top;
+  box-shadow: var(--key-pressed);
+}
+
+.key.white.active::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 40%;
+  background: linear-gradient(to top, var(--accent-dim), transparent);
+  border-radius: 0 0 8px 8px;
+  pointer-events: none;
+}
+
+.key.black {
+  width: 34px;
+  height: 128px;
+  background: var(--black-key);
+  border-radius: 0 0 6px 6px;
+  z-index: 2;
+  margin-left: -17px;
+  margin-right: -17px;
+  box-shadow: 0 6px 16px rgba(0,0,0,0.8), inset 0 1px 0 rgba(255,255,255,0.08);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
+  padding-bottom: 8px;
+}
+
+.key.black:hover {
+  background: var(--black-hover);
+}
+
+.key.black.active {
+  background: var(--black-active);
+  transform: scaleY(0.97);
+  transform-origin: top;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.9), inset 0 1px 0 rgba(255,255,255,0.08);
+}
+
+.key.black.active::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 45%;
+  background: linear-gradient(to top, rgba(167,139,250,0.25), transparent);
+  border-radius: 0 0 6px 6px;
+  pointer-events: none;
+}
+
+.key-label {
+  font-size: 9px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  pointer-events: none;
+  line-height: 1;
+}
+
+.key.white .key-label {
+  color: #8A87A0;
+}
+
+.key.black .key-label {
+  color: rgba(167, 139, 250, 0.5);
+}
+
+.key-note {
+  font-size: 8px;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  pointer-events: none;
+  line-height: 1;
+  margin-top: 2px;
+}
+
+.key.white .key-note {
+  color: #C0B8D8;
+}
+
+.key.black .key-note {
+  color: rgba(167, 139, 250, 0.35);
+}
+
+/* ── Ripple effect on keys ── */
+@keyframes key-ripple {
+  0% { transform: scale(0); opacity: 0.6; }
+  100% { transform: scale(3); opacity: 0; }
+}
+
+.key-ripple {
+  position: absolute;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background: var(--accent);
+  pointer-events: none;
+  animation: key-ripple 0.5s ease-out forwards;
+  transform-origin: center;
+  bottom: 20px;
+  left: 50%;
+  margin-left: -15px;
+}
+
+/* ── Scrollbar for wide piano ── */
+.piano-section::-webkit-scrollbar {
+  height: 4px;
+}
+.piano-section::-webkit-scrollbar-track {
+  background: var(--surface);
+}
+.piano-section::-webkit-scrollbar-thumb {
+  background: var(--border-light);
+  border-radius: 2px;
+}
+
+/* ── Responsive ── */
+@media (max-width: 900px) {
+  .controls-panel {
+    grid-template-columns: 1fr 1fr;
+  }
+  .record-group {
+    grid-column: span 2;
+  }
+  .main {
+    padding: 12px 16px 0;
+    gap: 12px;
+  }
+}
+
+@media (max-width: 600px) {
+  .controls-panel {
+    grid-template-columns: 1fr;
+  }
+  .record-group {
+    grid-column: span 1;
+  }
+  .header {
+    padding: 10px 16px;
+  }
+  .instrument-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation: none !important;
+    transition: none !important;
+  }
+}
